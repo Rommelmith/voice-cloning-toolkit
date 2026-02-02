@@ -9,7 +9,7 @@ torch.serialization.add_safe_globals([XttsConfig, XttsAudioConfig, XttsArgs])
 from TTS.api import TTS
 import sounddevice as sd
 
-SPEAKER_WAV = "Trump_clean.wav"
+SPEAKER_WAV = "CelebrityVoices/EmmaWatsonSample2_clean.wav"
 text = "Hello Rommel, this is a cloned voice, and i am your personal AI assistant"
 TEXT = text
 

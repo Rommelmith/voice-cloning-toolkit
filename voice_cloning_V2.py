@@ -50,7 +50,7 @@ class VoiceCloner:
 
 # Usage
 if __name__ == "__main__":
-    cloner = VoiceCloner("Trump_clean.wav")
+    cloner = VoiceCloner("CelebrityVoices/EmmaWatsonSample2_clean.wav")
 
     # Test different texts
     texts = [
