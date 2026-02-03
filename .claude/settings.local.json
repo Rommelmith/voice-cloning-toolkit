@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(nvidia-smi:*)",
+      "Bash(pip install:*)",
+      "Bash(.venv_tts\\\\Scripts\\\\python.exe:*)",
+      "Bash(cmd /c \".venv_tts\\\\Scripts\\\\python.exe -c \"\"import torch; print\\(''PyTorch:'', torch.__version__\\); print\\(''CUDA:'', torch.cuda.is_available\\(\\)\\)\"\"\")",
+      "Bash(C:/Users/romme/PycharmProjects/VoicesINOut/.venv_tts/Scripts/python.exe -c \"import torch; print\\(f''PyTorch: {torch.__version__}''\\); print\\(f''CUDA: {torch.cuda.is_available\\(\\)}''\\)\")",
+      "Bash(C:/Users/romme/PycharmProjects/VoicesINOut/.venv_tts/Scripts/python.exe:*)",
+      "Bash(C:/Users/romme/PycharmProjects/VoicesINOut/.venv_tts/Scripts/pip.exe:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}

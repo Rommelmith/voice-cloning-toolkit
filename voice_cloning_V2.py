@@ -1,13 +1,32 @@
 import torch
+import soundfile as sf_lib
+import numpy as np
+
+# Patch torchaudio.load to use soundfile instead of torchcodec (Windows compatibility)
+import torchaudio
+_original_load = torchaudio.load
+
+def _patched_load(filepath, *args, **kwargs):
+    """Use soundfile to load audio instead of torchcodec"""
+    audio, sample_rate = sf_lib.read(filepath, dtype='float32')
+    if audio.ndim == 1:
+        audio = audio.reshape(1, -1)
+    else:
+        audio = audio.T
+    return torch.from_numpy(audio), sample_rate
+
+torchaudio.load = _patched_load
+
 from TTS.tts.configs.xtts_config import XttsConfig
 from TTS.tts.models.xtts import XttsAudioConfig, XttsArgs
+from TTS.config.shared_configs import BaseDatasetConfig
+torch.serialization.add_safe_globals([BaseDatasetConfig])
 
 torch.serialization.add_safe_globals([XttsConfig, XttsAudioConfig, XttsArgs])
 
 from TTS.api import TTS
 import sounddevice as sd
-import soundfile as sf
-import numpy as np
+sf = sf_lib  # Reuse the already imported soundfile
 
 
 class VoiceCloner:
@@ -15,8 +34,8 @@ class VoiceCloner:
         self.speaker_wav = speaker_wav
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Initializing TTS on {self.device}...")
-        self.tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2").to(self.device)
-        print("✓ TTS model loaded")
+        self.tts = TTS("tts_models/multilingual/multi-dataset/xtts_v2", gpu=True)
+        print("[OK] TTS model loaded")
 
     def clone_voice(self, text, language="en", temperature=0.65,
                     repetition_penalty=5.0, speed=1.0):
@@ -45,7 +64,7 @@ class VoiceCloner:
     def save(self, audio, output_path, sample_rate=24000):
         """Save audio to file"""
         sf.write(output_path, audio, sample_rate)
-        print(f"✓ Saved to {output_path}")
+        print(f"[OK] Saved to {output_path}")
 
 
 # Usage
@@ -54,9 +73,7 @@ if __name__ == "__main__":
 
     # Test different texts
     texts = [
-        "Hello Rommel, this is a cloned voice, and I am your personal AI assistant.",
-        "The weather today is absolutely fantastic, don't you think?",
-        "I've been thinking about the future of artificial intelligence.",
+        "Hello Rommel, this is a cloned voice, and I am your personal AI assistant. The weather today is absolutely fantastic, don't you think? I've been thinking about the future of artificial intelligence.",
     ]
 
     for i, text in enumerate(texts):
