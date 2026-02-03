@@ -75,21 +75,25 @@ if __name__ == "__main__":
     texts = [
         "Hello Rommel, this is a cloned voice, and I am your personal AI assistant. The weather today is absolutely fantastic, don't you think? I've been thinking about the future of artificial intelligence.",
     ]
+    while True:
+        texts = []
+        text = input("Please enter a text: ")
+        texts.append(text)
 
-    for i, text in enumerate(texts):
-        print(f"\n--- Test {i + 1} ---")
+        for i, text in enumerate(texts):
+            print(f"\n--- Test {i + 1} ---")
 
-        # Generate with optimal settings
-        audio = cloner.clone_voice(
-            text=text,
-            language="en",
-            temperature=0.65,  # Balanced
-            repetition_penalty=5.0,
-            speed=1.0
-        )
+            # Generate with optimal settings
+            audio = cloner.clone_voice(
+                text=text,
+                language="en",
+                temperature=0.65,  # Balanced
+                repetition_penalty=5.0,
+                speed=1.0
+            )
 
-        # Save
-        cloner.save(audio, f"output_{i + 1}.wav")
+            # Save
+            # cloner.save(audio, f"output_{i + 1}.wav")
 
-        # Play
-        cloner.play(audio)
+            # Play
+            cloner.play(audio)
