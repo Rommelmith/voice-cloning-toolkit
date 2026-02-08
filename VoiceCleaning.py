@@ -188,17 +188,12 @@ class VoiceCleaner:
 if __name__ == "__main__":
     cleaner = VoiceCleaner(target_sr=24000)
 
-    input_file = r"C:\Users\romme\PycharmProjects\VoicesINOut\CelebrityVoices\donald-trump.wav"
-    output_file = "Trump_clean.wav"
+    input_file = r"C:\Users\romme\PycharmProjects\VoicesINOut\CelebrityVoices\andrew-tate.wav"
+    output_file = "output_clean.wav"
 
     # Standard cleaning
-    cleaner.process(
-        input_file,
-        output_file,
-        noise_reduction=0.5,  # Adjust 0.3-0.8
-        target_duration=15,
-        target_db=-20
-    )
+    cleaner.process(input_file, output_file, noise_reduction=0.5,  # Adjust 0.3-0.8
+                    target_duration=15, target_db=-20)
 
     # For very noisy audio, use more aggressive settings:
     # cleaner.process(input_file, output_file, noise_reduction=0.7, target_db=-18)
